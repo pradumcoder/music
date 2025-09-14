@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Music Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+    }
+    .wrapper {
+      background: rgba(255, 255, 255, 0.8); 
+      width: 350px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      padding: 25px;
+      text-align: center;
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .img-area img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+    .song-details {
+      margin: 15px 0;
+    }
+    .song-details .name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .song-details .artist {
+      font-size: 14px;
+      color: #555;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 30px;
+    }
+    .play-pause {
+      background: #4CAF50;
+      color: white;
+      padding: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .play-pause:hover {
+      background: #45a049;
+    }
+    i {
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    i:hover {
+      color: #4CAF50;
+    }
+
+    /* Media Query for Mobile Devices */
+    @media (max-width: 600px) {
+      .wrapper {
+        width: 90%;
+        padding: 15px;
+        height: auto;
+      }
+      .img-area img {
+        width: 180px;
+        height: 180px;
+        margin-bottom: 15px;
+      }
+      .song-details .name {
+        font-size: 16px;
+      }
+      .song-details .artist {
+        font-size: 12px;
+      }
+      .controls {
+        font-size: 24px;
+      }
+      .play-pause {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="img-area">
+      <img id="song-img" src="https://tse4.mm.bing.net/th/id/OIP.V8U-bv22uPzOVdOZDgG0GwHaEp?pid=Api&P=0&h=180" alt="Album Art">
+    </div>
+
+    <div class="song-details">
+      <p class="name" id="song-name">Song Name</p>
+      <p class="artist" id="song-artist">Artist Name</p>
+    </div>
+
+    <div class="controls">
+      <i class="material-icons" onclick="prevSong()">skip_previous</i>
+      <div class="play-pause" onclick="togglePlay()">
+        <i class="material-icons" id="play-icon">play_arrow</i>
+      </div>
+      <i class="material-icons" onclick="nextSong()">skip_next</i>
+    </div>
+
+    <audio id="audio"></audio>
+  </div>
+
+  <script>
+    const songs = [
+      {
+        name: "Tum Hi Ho",
+        artist: "Arijit Singh",
+        src: "audio/ashiq1.mp3",
+        img: "https://tse4.mm.bing.net/th/id/OIP.V8U-bv22uPzOVdOZDgG0GwHaEp?pid=Api&P=0&h=180"
+      },
+      {
+        name: "Sunn Raha Hai",
+        artist: "Ankit Tiwari",
+        src: "audio/ashique3.mp3",
+        img: "https://tse2.mm.bing.net/th/id/OIP.Tjco2YUQyGUKQNKKuhkcxQHaEK?pid=Api&P=0&h=180"
+      },
+      {
+        name: "Chahun Main Ya Naa",
+        artist: "Palak Muchhal",
+        src: "audio/ashiqu2.mp3",
+        img: "https://tse4.mm.bing.net/th/id/OIP.8qFTMHU_TCAIvnuGhGYHNgHaEK?pid=Api&P=0&h=180"
+      }
+    ];
+
+    const audio = document.getElementById('audio');
+    const playIcon = document.getElementById('play-icon');
+    const songName = document.getElementById('song-name');
+    const songArtist = document.getElementById('song-artist');
+    const songImg = document.getElementById('song-img');
+
+    let songIndex = 0;
+    let isPlaying = false;
+
+    loadSong();
+
+    function loadSong() {
+      const song = songs[songIndex];
+      songName.textContent = song.name;
+      songArtist.textContent = song.artist;
+      songImg.src = song.img;
+      audio.src = song.src;
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        playIcon.textContent = 'play_arrow';
+      } else {
+        audio.play();
+        isPlaying = true;
+        playIcon.textContent = 'pause';
+      }
+    }
+
+    function prevSong() {
+      songIndex = (songIndex - 1 + songs.length) % songs.length;
+      loadSong();
+      audio.play();
+      isPlaying = true;
+      playIcon.textContent = 'pause';
+    }
+
+    function nextSong() {
+      songIndex = (songIndex + 1) % songs.length;
+      loadSong();
+      audio.play();
+      isPlaying = true;
+      playIcon.textContent = 'pause';
+    }
+  </script>
+</body>
+</html>
